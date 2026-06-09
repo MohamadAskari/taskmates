@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "JawaScript",
-    "slug": "jawascript",
+    "name": "TaskMates",
+    "slug": "taskmates",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,14 +14,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jawascript.app"
+      "bundleIdentifier": "com.taskmates.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#5B4FE9"
       },
-      "package": "com.jawascript.app"
+      "package": "com.taskmates.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"

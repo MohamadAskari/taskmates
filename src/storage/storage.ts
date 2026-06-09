@@ -2,10 +2,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Task, Stakes } from '../data/mockData';
 
 const KEYS = {
-  session:      '@jawa/session',
-  tasks:        '@jawa/tasks',
-  stakes:       '@jawa/stakes',
-  memberPoints: '@jawa/memberPoints',
+  session:      '@taskmates/session',
+  tasks:        '@taskmates/tasks',
+  stakes:       '@taskmates/stakes',
+  memberPoints: '@taskmates/memberPoints',
 } as const;
 
 export interface Session {

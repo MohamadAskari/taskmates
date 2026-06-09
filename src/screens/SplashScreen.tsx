@@ -67,7 +67,7 @@ export default function SplashScreen({ navigation }: Props) {
             <View style={styles.iconWrap}>
               <Text style={styles.iconEmoji}>⚡</Text>
             </View>
-            <Text style={styles.appName}>JawaScript</Text>
+            <Text style={styles.appName}>TaskMates</Text>
             <Text style={styles.tagline}>do things. together.</Text>
           </View>
 
