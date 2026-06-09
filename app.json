@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "JawaScript",
+    "slug": "jawascript",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#5B4FE9"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jawascript.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#5B4FE9"
+      },
+      "package": "com.jawascript.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-font"
+    ]
+  }
+}

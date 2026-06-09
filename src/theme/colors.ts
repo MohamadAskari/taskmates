@@ -1,0 +1,30 @@
+export const COLORS = {
+  primary: '#5B4FE9',
+  primaryLight: '#7B72F0',
+  primaryDark: '#4338CA',
+  primaryBg: '#EEF0FF',
+  orange: '#F97316',
+  green: '#22C55E',
+  blue: '#3B82F6',
+  gold: '#F59E0B',
+  white: '#FFFFFF',
+  black: '#0F0F1A',
+  textPrimary: '#1A1A2E',
+  textSecondary: '#6B7280',
+  textMuted: '#9CA3AF',
+  background: '#F3F4F8',
+  cardBg: '#FFFFFF',
+  border: '#E5E7EB',
+  success: '#22C55E',
+  danger: '#EF4444',
+  toastGreen: '#16A34A',
+  darkCard: '#1E1B4B',
+};
+
+export const SHADOW = {
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.08,
+  shadowRadius: 8,
+  elevation: 4,
+};
