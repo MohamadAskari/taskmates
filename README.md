@@ -135,8 +135,3 @@ This is a **prototype** — no real backend yet:
 
 PRs welcome. Please open an issue first for large changes.
 
----
-
-## License
-
-MIT
