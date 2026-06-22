@@ -25,13 +25,20 @@ export default function TaskItem({ task, onMarkDone, showDoneButton = true }: Ta
 
   return (
     <View style={styles.card}>
-      <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-        {task.done ? (
-          <Ionicons name="checkmark-circle" size={24} color={COLORS.success} />
-        ) : (
-          <View style={styles.emptyCheck} />
-        )}
-      </Animated.View>
+      <TouchableOpacity
+        onPress={handleDone}
+        activeOpacity={0.7}
+        disabled={task.done || !showDoneButton || !onMarkDone}
+        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+      >
+        <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+          {task.done ? (
+            <Ionicons name="checkmark-circle" size={24} color={COLORS.success} />
+          ) : (
+            <View style={styles.emptyCheck} />
+          )}
+        </Animated.View>
+      </TouchableOpacity>
       <View style={styles.content}>
         <Text
           style={[

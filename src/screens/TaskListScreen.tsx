@@ -11,7 +11,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useApp } from '../context/AppContext';
+import { Task } from '../data/mockData';
 import TaskItem from '../components/TaskItem';
+import TaskGroupCard from '../components/TaskGroupCard';
 import { COLORS, SHADOW } from '../theme/colors';
 import { FONTS, FONT_SIZES } from '../theme/typography';
 import { SPACING, RADIUS } from '../theme/spacing';
@@ -21,18 +23,59 @@ type TasksNavProp = StackNavigationProp<TasksStackParamList, 'TaskList'>;
 
 type TabKey = 'All' | 'Pending' | 'Done';
 
+type RenderItem =
+  | { type: 'task'; task: Task }
+  | { type: 'group'; groupId: string; groupTitle: string; visibleTasks: Task[]; totalInGroup: number; doneInGroup: number };
+
+/**
+ * Builds a newest-first render list while collapsing grouped tasks into a
+ * single group card that appears at the position of its most-recently-added task.
+ *
+ * `filteredTasks` is the tab-filtered (but original-order) list – used so the
+ * tasks inside each group keep their logical top-to-bottom order.
+ */
+function buildRenderList(filteredTasks: Task[], allTasks: Task[]): RenderItem[] {
+  const reversed = [...filteredTasks].reverse();
+  const seenGroups = new Set<string>();
+  const items: RenderItem[] = [];
+
+  for (const task of reversed) {
+    if (!task.groupId) {
+      items.push({ type: 'task', task });
+    } else if (!seenGroups.has(task.groupId)) {
+      seenGroups.add(task.groupId);
+      // visible tasks in original order (matches the tab filter)
+      const visibleTasks = filteredTasks.filter(t => t.groupId === task.groupId);
+      // totals across ALL tasks so progress is always meaningful
+      const groupAll = allTasks.filter(t => t.groupId === task.groupId);
+      items.push({
+        type: 'group',
+        groupId: task.groupId,
+        groupTitle: task.groupTitle ?? task.groupId,
+        visibleTasks,
+        totalInGroup: groupAll.length,
+        doneInGroup: groupAll.filter(t => t.done).length,
+      });
+    }
+  }
+
+  return items;
+}
+
 export default function TaskListScreen() {
   const navigation = useNavigation<TasksNavProp>();
   const { tasks, markTaskDone } = useApp();
   const [activeTab, setActiveTab] = useState<TabKey>('All');
 
   const pending = tasks.filter(t => !t.done);
-  const done = tasks.filter(t => t.done);
+  const done    = tasks.filter(t => t.done);
 
-  const displayed =
+  const filteredTasks =
     activeTab === 'Pending' ? pending :
     activeTab === 'Done'    ? done    :
-    [...pending, ...done];
+    tasks;
+
+  const renderItems = buildRenderList(filteredTasks, tasks);
 
   const handleDone = (taskId: string, taskTitle: string, points: number) => {
     markTaskDone(taskId);
@@ -40,9 +83,9 @@ export default function TaskListScreen() {
   };
 
   const tabs: { key: TabKey; count: number }[] = [
-    { key: 'All',     count: tasks.length  },
-    { key: 'Pending', count: pending.length },
-    { key: 'Done',    count: done.length    },
+    { key: 'All',     count: tasks.length   },
+    { key: 'Pending', count: pending.length  },
+    { key: 'Done',    count: done.length     },
   ];
 
   return (
@@ -83,19 +126,30 @@ export default function TaskListScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {displayed.length === 0 ? (
+        {renderItems.length === 0 ? (
           <View style={styles.empty}>
             <Text style={styles.emptyText}>No tasks here yet!</Text>
           </View>
         ) : (
-          displayed.map(task => (
-            <TaskItem
-              key={task.id}
-              task={task}
-              showDoneButton={!task.done}
-              onMarkDone={() => handleDone(task.id, task.title, task.points)}
-            />
-          ))
+          renderItems.map(item =>
+            item.type === 'task' ? (
+              <TaskItem
+                key={item.task.id}
+                task={item.task}
+                showDoneButton={!item.task.done}
+                onMarkDone={() => handleDone(item.task.id, item.task.title, item.task.points)}
+              />
+            ) : (
+              <TaskGroupCard
+                key={item.groupId}
+                groupTitle={item.groupTitle}
+                tasks={item.visibleTasks}
+                totalInGroup={item.totalInGroup}
+                doneInGroup={item.doneInGroup}
+                onMarkDone={handleDone}
+              />
+            )
+          )
         )}
       </ScrollView>
 

@@ -12,6 +12,8 @@ export interface Task {
   title: string;
   points: number;
   done: boolean;
+  groupId?: string;
+  groupTitle?: string;
 }
 
 export interface Proposal {

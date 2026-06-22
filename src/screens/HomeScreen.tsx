@@ -25,6 +25,19 @@ export default function HomeScreen() {
   const navigation = useNavigation<HomeNavProp>();
   const { tasks, markTaskDone, stakes, memberPoints, hasVoted } = useApp();
 
+  // // Empty AsyncStorage on initial render
+  // React.useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const { default: AsyncStorage } = await import('@react-native-async-storage/async-storage');
+  //       await AsyncStorage.clear();
+  //       console.log('AsyncStorage emptied');
+  //     } catch (err) {
+  //       console.error('Failed to empty AsyncStorage', err);
+  //     }
+  //   })();
+  // }, []);
+
   const pendingTasks = [...tasks].reverse().filter(t => !t.done).slice(0, 3);
   const leadingProposal = stakes.proposals.find(p => p.leading) ?? stakes.proposals[0];
 

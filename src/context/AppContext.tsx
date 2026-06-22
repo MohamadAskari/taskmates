@@ -76,23 +76,27 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const voteOnStake = (proposalId: string) => {
     setStakesState(prev => {
       const prevVoteId = prev.userVotedFor;
+      const isRevoking = prevVoteId === proposalId;
       const next: Stakes = {
         ...prev,
-        userVotedFor: proposalId,
+        userVotedFor: isRevoking ? null : proposalId,
         proposals: prev.proposals.map(p => {
-          if (p.id === proposalId && prevVoteId !== proposalId) {
+          if (isRevoking && p.id === proposalId) {
+            return { ...p, votes: Math.max(0, p.votes - 1) };
+          }
+          if (!isRevoking && p.id === proposalId && prevVoteId !== proposalId) {
             return { ...p, votes: p.votes + 1 };
           }
-          if (p.id === prevVoteId && prevVoteId !== proposalId) {
+          if (!isRevoking && p.id === prevVoteId && prevVoteId !== proposalId) {
             return { ...p, votes: Math.max(0, p.votes - 1) };
           }
           return p;
         }),
       };
       setStakes(next);
+      setHasVoted(!isRevoking);
       return next;
     });
-    setHasVoted(true);
   };
 
   const addProposal = (proposal: Proposal) => {

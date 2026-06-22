@@ -29,6 +29,7 @@ export default function LeagueStakesScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
+
         {/* Subtitle */}
         <Text style={styles.subtitle}>Last place each week faces the punishment</Text>
 
@@ -88,9 +89,14 @@ export default function LeagueStakesScreen() {
               </View>
 
               {isVoted ? (
-                <View style={styles.yourVoteBtn}>
+                <TouchableOpacity
+                  style={styles.yourVoteBtn}
+                  onPress={() => voteOnStake(proposal.id)}
+                  activeOpacity={0.8}
+                >
                   <Text style={styles.yourVoteBtnText}>👍 Your vote ✓</Text>
-                </View>
+                  <Text style={styles.revokeHint}>Tap to revoke</Text>
+                </TouchableOpacity>
               ) : stakes.userVotedFor ? (
                 <TouchableOpacity
                   style={styles.switchVoteBtn}
@@ -112,16 +118,19 @@ export default function LeagueStakesScreen() {
           );
         })}
 
-        {/* Propose card */}
-        <TouchableOpacity
-          style={styles.proposeCard}
-          onPress={() => navigation.navigate('ProposeStakes')}
-          activeOpacity={0.8}
-        >
-          <Ionicons name="add-circle-outline" size={20} color={COLORS.textMuted} />
-          <Text style={styles.proposeText}>+ Propose a punishment</Text>
-        </TouchableOpacity>
       </ScrollView>
+
+      {/* Sticky footer — always visible, no scrolling required */}
+      <View style={styles.footer}>
+        <TouchableOpacity
+          style={styles.proposeBtn}
+          onPress={() => navigation.navigate('ProposeStakes')}
+          activeOpacity={0.85}
+        >
+          <Ionicons name="add-circle" size={20} color={COLORS.white} />
+          <Text style={styles.proposeBtnText}>Propose a new punishment</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -133,7 +142,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: SPACING.base,
-    paddingBottom: SPACING['3xl'],
+    paddingBottom: SPACING['2xl'],
   },
   subtitle: {
     fontFamily: FONTS.regular,
@@ -281,6 +290,12 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZES.sm,
     color: COLORS.primary,
   },
+  revokeHint: {
+    fontFamily: FONTS.regular,
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.textMuted,
+    marginTop: 2,
+  },
   switchVoteBtn: {
     borderWidth: 1.5,
     borderColor: COLORS.border,
@@ -294,21 +309,28 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZES.sm,
     color: COLORS.textSecondary,
   },
-  proposeCard: {
-    borderWidth: 1.5,
-    borderColor: COLORS.border,
-    borderStyle: 'dashed',
-    borderRadius: RADIUS.card,
-    padding: SPACING.base,
+  footer: {
+    paddingHorizontal: SPACING.base,
+    paddingTop: SPACING.sm,
+    paddingBottom: 0,
+    backgroundColor: COLORS.background,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.border,
+  },
+  proposeBtn: {
+    backgroundColor: COLORS.primary,
+    borderRadius: RADIUS.lg,
+    height: 54,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    marginTop: SPACING.sm,
+    ...SHADOW,
+    shadowOpacity: 0.18,
   },
-  proposeText: {
-    fontFamily: FONTS.semiBold,
-    fontSize: FONT_SIZES.sm,
-    color: COLORS.textMuted,
+  proposeBtnText: {
+    color: COLORS.white,
+    fontFamily: FONTS.bold,
+    fontSize: FONT_SIZES.md,
   },
 });

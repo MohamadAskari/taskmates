@@ -53,6 +53,7 @@ export default function AIOutputScreen() {
   };
 
   const handleAddSelected = () => {
+    const groupId = `group_${Date.now()}`;
     steps.forEach((step, i) => {
       if (selectedSteps.has(i)) {
         addTask({
@@ -60,6 +61,8 @@ export default function AIOutputScreen() {
           title: step.title,
           points: step.difficulty,
           done: false,
+          groupId,
+          groupTitle: taskName,
         });
       }
     });

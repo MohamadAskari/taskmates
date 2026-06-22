@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     paddingVertical: 3,
-    alignSelf: 'flex-start',
   },
   label: {
     fontFamily: FONTS.bold,
